@@ -42,7 +42,7 @@ public class FXMLDocumentController implements Initializable
     Set<KeyCode> input = new HashSet();
     double gameBoardHeight = 600;
     double gameBoardWidth = 900;
-    double paddleWidth = 15;
+    double paddleWidth = 7;
     double paddleHeight = 100;
     double bounceAngle = 0;
     double maxBounceAngle = 5 * Math.PI / 12;
@@ -73,12 +73,12 @@ public class FXMLDocumentController implements Initializable
     {
         ball = new Circle(gameBoardWidth / 2.0, gameBoardHeight / 2.0, 7, Color.WHITE);
 
-        paddle1 = new Rectangle(12, 100, Color.WHITE);
+        paddle1 = new Rectangle(paddleWidth, paddleHeight, Color.WHITE);
 
         paddle1.setX(0);
         paddle1.setY((gameBoardHeight - paddleHeight) / 2);
 
-        paddle2 = new Rectangle(15, 100, Color.WHITE);
+        paddle2 = new Rectangle(paddleWidth, paddleHeight, Color.WHITE);
         paddle2.setX(gameBoardWidth - paddleWidth);
         paddle2.setY((gameBoardHeight - paddleHeight) / 2);
 
