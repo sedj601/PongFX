@@ -45,30 +45,36 @@ public class FXMLDocumentController implements Initializable
     double gameBoardWidth = 600;
     double paddleWidth = 15;
     double paddleHeight = 100;
-
+    double bounceAngle = 0;
+    double maxBounceAngle = 5 * Math.PI/12;
+    int ballSpeedX = 10;
+    int ballSpeedY = 10;
+    
     @FXML
     private void handleBtnNewGame(ActionEvent event)
     {
         Platform.runLater(() -> paneGameBoard.requestFocus());
-        gameLoop.play();
+        switch(gameLoop.getStatus())
+        {
+            case STOPPED:
+                gameLoop.play();
+                break;
+            case RUNNING:
+                gameLoop.stop();
+                bounceAngle = 0;
+                maxBounceAngle = 5 * Math.PI/12;
+                ballSpeedX = 10;
+                ballSpeedY = 10;
+                gameLoop.play();
+                break;
+        }
     }
 
-    @FXML
-    private void handleSceneKeyPress(KeyEvent event)
-    {
-
-    }
-
-    @FXML
-    private void handleSceneKeyRelease(KeyEvent event)
-    {
-
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        ball = new Circle(gameBoardWidth / 2.0, gameBoardHeight / 2.0, 15, Color.WHITE);
+        ball = new Circle(gameBoardWidth / 2.0, gameBoardHeight / 2.0, 7, Color.WHITE);
 
         paddle1 = new Rectangle(12, 100, Color.WHITE);
 
@@ -83,19 +89,20 @@ public class FXMLDocumentController implements Initializable
 
         paneGameBoard.setOnKeyPressed((event) -> {
             KeyCode code = event.getCode();
-            System.out.println("press: " + input.toString());
+//            System.out.println("press: " + input.toString());
             input.add(code);
         });
 
         paneGameBoard.setOnKeyReleased((event) -> {
             KeyCode code = event.getCode();
-            System.out.println("release: " + input.toString());
+//            System.out.println("release: " + input.toString());
             input.remove(code);
         });
 
-        gameLoop = new Timeline(new KeyFrame(Duration.millis(16), (event) -> {
+        gameLoop = new Timeline(new KeyFrame(Duration.millis(20), (event) -> {
             movePaddle();
-            checkBorderCollsion();
+            checkBorderCollision();
+            moveBall();
         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
 
@@ -118,7 +125,7 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    private void checkBorderCollsion()
+    private void checkBorderCollision()
     {
         if (paddle1.getBoundsInParent().getMaxY() >= paneGameBoard.getHeight()) {
             paddle1.setY(gameBoardHeight - paddleHeight);
@@ -134,4 +141,47 @@ public class FXMLDocumentController implements Initializable
             paddle2.setY(0);
         }
     }
+    
+    private void moveBall()
+    {
+        System.out.println(ball.getBoundsInParent().getMinY());
+        if(ball.getBoundsInParent().intersects(paddle1.getBoundsInParent()))
+        {
+            double intersectY = ball.getCenterY() - paddle1.getBoundsInParent().getMinY();
+            double relativeIntersectY = intersectY - (paddleHeight / 2);
+            double normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
+            bounceAngle = normalizedRelativeIntersectionY * maxBounceAngle;
+            ballSpeedX *= -1;
+            ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY * Math.sin(bounceAngle));
+        }
+        else if(ball.getBoundsInParent().intersects(paddle2.getBoundsInParent()))
+        {
+            double intersectY = ball.getCenterY() - paddle2.getBoundsInParent().getMinY();
+            double relativeIntersectY = intersectY - (paddleHeight / 2);
+            double normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
+            bounceAngle = normalizedRelativeIntersectionY * maxBounceAngle;
+            ballSpeedX *= -1;
+            ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY *- Math.sin(bounceAngle));
+        }
+        else if(ball.getBoundsInParent().getMinY() <= 0)
+        {
+            ballSpeedY *= -1;
+            ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
+        }
+        else if(ball.getBoundsInParent().getMaxY() >= paneGameBoard.getHeight())
+        {
+            ballSpeedY *= -1;
+            ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
+        }
+        else{
+            ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
+            ball.setCenterY(ball.getCenterY() +  ballSpeedY * -Math.sin(bounceAngle));
+        }
+    }
+    
+    
 }
