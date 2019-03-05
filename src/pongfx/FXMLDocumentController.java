@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -41,35 +40,33 @@ public class FXMLDocumentController implements Initializable
     Rectangle paddle1, paddle2;
     Circle ball;
     Set<KeyCode> input = new HashSet();
-    double gameBoardHeight = 500;
-    double gameBoardWidth = 600;
+    double gameBoardHeight = 600;
+    double gameBoardWidth = 900;
     double paddleWidth = 15;
     double paddleHeight = 100;
     double bounceAngle = 0;
-    double maxBounceAngle = 5 * Math.PI/12;
+    double maxBounceAngle = 5 * Math.PI / 12;
     int ballSpeedX = 10;
     int ballSpeedY = 10;
-    
+
     @FXML
     private void handleBtnNewGame(ActionEvent event)
     {
         Platform.runLater(() -> paneGameBoard.requestFocus());
-        switch(gameLoop.getStatus())
-        {
+        switch (gameLoop.getStatus()) {
             case STOPPED:
                 gameLoop.play();
                 break;
             case RUNNING:
                 gameLoop.stop();
                 bounceAngle = 0;
-                maxBounceAngle = 5 * Math.PI/12;
+                maxBounceAngle = 5 * Math.PI / 12;
                 ballSpeedX = 10;
                 ballSpeedY = 10;
                 gameLoop.play();
                 break;
         }
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -141,47 +138,42 @@ public class FXMLDocumentController implements Initializable
             paddle2.setY(0);
         }
     }
-    
+
     private void moveBall()
     {
         System.out.println(ball.getBoundsInParent().getMinY());
-        if(ball.getBoundsInParent().intersects(paddle1.getBoundsInParent()))
-        {
+        if (ball.getBoundsInParent().intersects(paddle1.getBoundsInParent())) {
             double intersectY = ball.getCenterY() - paddle1.getBoundsInParent().getMinY();
             double relativeIntersectY = intersectY - (paddleHeight / 2);
             double normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
             bounceAngle = normalizedRelativeIntersectionY * maxBounceAngle;
             ballSpeedX *= -1;
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
-            ball.setCenterY(ball.getCenterY() + ballSpeedY * Math.sin(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
-        else if(ball.getBoundsInParent().intersects(paddle2.getBoundsInParent()))
-        {
+        else if (ball.getBoundsInParent().intersects(paddle2.getBoundsInParent())) {
             double intersectY = ball.getCenterY() - paddle2.getBoundsInParent().getMinY();
             double relativeIntersectY = intersectY - (paddleHeight / 2);
             double normalizedRelativeIntersectionY = relativeIntersectY / (paddleHeight / 2);
             bounceAngle = normalizedRelativeIntersectionY * maxBounceAngle;
             ballSpeedX *= -1;
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
-            ball.setCenterY(ball.getCenterY() + ballSpeedY *- Math.sin(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
-        else if(ball.getBoundsInParent().getMinY() <= 0)
-        {
+        else if (ball.getBoundsInParent().getMinY() <= 0) {
             ballSpeedY *= -1;
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
             ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
-        else if(ball.getBoundsInParent().getMaxY() >= paneGameBoard.getHeight())
-        {
+        else if (ball.getBoundsInParent().getMaxY() >= paneGameBoard.getHeight()) {
             ballSpeedY *= -1;
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
             ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
-        else{
+        else {
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
-            ball.setCenterY(ball.getCenterY() +  ballSpeedY * -Math.sin(bounceAngle));
+            ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
     }
-    
-    
+
 }
