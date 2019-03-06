@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="700.0" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongfx.FXMLDocumentController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1080.0" prefHeight="600.0" prefWidth="700.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongfx.FXMLDocumentController">
    <children>
       <MenuBar>
         <menus>
@@ -28,10 +29,13 @@
             </items>
           </Menu>
         </menus>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </MenuBar>
       <StackPane>
          <children>
-            <Pane fx:id="paneGameBoard" maxWidth="600.0" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: black;" />
+            <Pane fx:id="paneGameBoard" maxWidth="900.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: black;" />
          </children>
       </StackPane>
       <StackPane>
