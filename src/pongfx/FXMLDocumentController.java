@@ -46,8 +46,8 @@ public class FXMLDocumentController implements Initializable
     double paddleHeight = 100;
     double bounceAngle = 0;
     double maxBounceAngle = 5 * Math.PI / 12;
-    int ballSpeedX = 10;
-    int ballSpeedY = 10;
+    int ballSpeedX = 12;
+    int ballSpeedY = 12;
     PongAIPlayer player1, player2;
 
     @FXML
