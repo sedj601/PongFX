@@ -48,6 +48,7 @@ public class FXMLDocumentController implements Initializable
     double maxBounceAngle = 5 * Math.PI / 12;
     int ballSpeedX = 10;
     int ballSpeedY = 10;
+    PongAIPlayer player1, player2;
 
     @FXML
     private void handleBtnNewGame(ActionEvent event)
@@ -59,8 +60,8 @@ public class FXMLDocumentController implements Initializable
                 break;
             case RUNNING:
                 gameLoop.stop();
-                bounceAngle = 0;
                 maxBounceAngle = 5 * Math.PI / 12;
+                bounceAngle = 0;
                 ballSpeedX = 10;
                 ballSpeedY = 10;
                 gameLoop.play();
@@ -71,28 +72,28 @@ public class FXMLDocumentController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+
         ball = new Circle(gameBoardWidth / 2.0, gameBoardHeight / 2.0, 7, Color.WHITE);
 
         paddle1 = new Rectangle(paddleWidth, paddleHeight, Color.WHITE);
-
         paddle1.setX(0);
         paddle1.setY((gameBoardHeight - paddleHeight) / 2);
+        player1 = new PongAIPlayer(paddle1);
 
         paddle2 = new Rectangle(paddleWidth, paddleHeight, Color.WHITE);
         paddle2.setX(gameBoardWidth - paddleWidth);
         paddle2.setY((gameBoardHeight - paddleHeight) / 2);
+        player2 = new PongAIPlayer(paddle2);
 
         paneGameBoard.getChildren().addAll(ball, paddle1, paddle2);
 
         paneGameBoard.setOnKeyPressed((event) -> {
             KeyCode code = event.getCode();
-//            System.out.println("press: " + input.toString());
             input.add(code);
         });
 
         paneGameBoard.setOnKeyReleased((event) -> {
             KeyCode code = event.getCode();
-//            System.out.println("release: " + input.toString());
             input.remove(code);
         });
 
@@ -100,6 +101,14 @@ public class FXMLDocumentController implements Initializable
             movePaddle();
             checkBorderCollision();
             moveBall();
+            if (ballSpeedX < 0) {
+                player1.MovePaddle(true, ball.getCenterX(), ball.getCenterY());
+                player2.MovePaddle(false, ball.getCenterX(), ball.getCenterY());
+            }
+            else {
+                player1.MovePaddle(false, ball.getCenterX(), ball.getCenterY());
+                player2.MovePaddle(true, ball.getCenterX(), ball.getCenterY());
+            }
         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
 
@@ -141,7 +150,6 @@ public class FXMLDocumentController implements Initializable
 
     private void moveBall()
     {
-        System.out.println(ball.getBoundsInParent().getMinY());
         if (ball.getBoundsInParent().intersects(paddle1.getBoundsInParent())) {
             double intersectY = ball.getCenterY() - paddle1.getBoundsInParent().getMinY();
             double relativeIntersectY = intersectY - (paddleHeight / 2);
