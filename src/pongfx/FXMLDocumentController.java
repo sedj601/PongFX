@@ -110,7 +110,7 @@ public class FXMLDocumentController implements Initializable
                 player2.MovePaddle(true, ball.getCenterX(), ball.getCenterY());
             }
         }));
-        gameLoop.gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.setCycleCount(Timeline.INDEFINITE);
 
     }
 
