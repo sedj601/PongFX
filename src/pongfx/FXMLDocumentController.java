@@ -46,8 +46,8 @@ public class FXMLDocumentController implements Initializable
     double paddleHeight = 100;
     double bounceAngle = 0;
     double maxBounceAngle = 5 * Math.PI / 12;
-    int ballSpeedX = 12;
-    int ballSpeedY = 12;
+    int ballSpeedX = 13;
+    int ballSpeedY = 13;
     PongAIPlayer player1, player2;
 
     @FXML
@@ -62,8 +62,8 @@ public class FXMLDocumentController implements Initializable
                 gameLoop.stop();
                 maxBounceAngle = 5 * Math.PI / 12;
                 bounceAngle = 0;
-                ballSpeedX = 14;
-                ballSpeedY = 14;
+                ballSpeedX = 12;
+                ballSpeedY = 12;
                 gameLoop.play();
                 break;
         }
@@ -98,9 +98,9 @@ public class FXMLDocumentController implements Initializable
         });
 
         gameLoop = new Timeline(new KeyFrame(Duration.millis(16), (event) -> {
-            movePaddle();
-            checkBorderCollision();
             moveBall();
+            movePaddle();
+
             if (ballSpeedX < 0) {
                 player1.MovePaddle(true, ball.getCenterX(), ball.getCenterY());
                 player2.MovePaddle(false, ball.getCenterX(), ball.getCenterY());
@@ -109,6 +109,8 @@ public class FXMLDocumentController implements Initializable
                 player1.MovePaddle(false, ball.getCenterX(), ball.getCenterY());
                 player2.MovePaddle(true, ball.getCenterX(), ball.getCenterY());
             }
+
+            checkBorderCollision();
         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
 
