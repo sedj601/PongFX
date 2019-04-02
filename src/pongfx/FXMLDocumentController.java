@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -36,6 +37,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Pane paneGameBoard;
 
+    @FXML
+    private Label lblPlayer1Score, lblPlayer2Score;
+
     Timeline gameLoop;
     Rectangle paddle1, paddle2;
     Circle ball;
@@ -49,6 +53,8 @@ public class FXMLDocumentController implements Initializable
     int ballSpeedX = 13;
     int ballSpeedY = 13;
     PongAIPlayer player1, player2;
+    int player1Score = 0;
+    int player2Score = 0;
 
     @FXML
     private void handleBtnNewGame(ActionEvent event)
@@ -113,7 +119,6 @@ public class FXMLDocumentController implements Initializable
             checkBorderCollision();
         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
-
     }
 
     private void movePaddle()
@@ -180,10 +185,26 @@ public class FXMLDocumentController implements Initializable
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
             ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
+        else if (ball.getBoundsInParent().getMinX() <= 0) {
+            player2Score += 1;
+            lblPlayer2Score.setText(Integer.toString(player2Score));
+            gameLoop.stop();
+
+        }
+        else if (ball.getBoundsInParent().getMaxX() >= paneGameBoard.getWidth()) {
+            player1Score += 1;
+            lblPlayer1Score.setText(Integer.toString(player1Score));
+            gameLoop.stop();
+        }
         else {
             ball.setCenterX(ball.getCenterX() + ballSpeedX * Math.cos(bounceAngle));
             ball.setCenterY(ball.getCenterY() + ballSpeedY * -Math.sin(bounceAngle));
         }
+
     }
 
+    public void newBallReset()
+    {
+
+    }
 }

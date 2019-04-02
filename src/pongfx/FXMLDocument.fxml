@@ -2,9 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -33,6 +35,34 @@
             <Insets />
          </VBox.margin>
       </MenuBar>
+      <StackPane prefHeight="100.0">
+         <children>
+            <VBox maxWidth="-Infinity">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="200.0" text="Score" />
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Player 1" />
+                              <Label fx:id="lblPlayer1Score" alignment="CENTER" maxWidth="1.7976931348623157E308" text="0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Player 2" />
+                              <Label fx:id="lblPlayer2Score" alignment="CENTER" maxWidth="1.7976931348623157E308" text="0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </StackPane>
       <StackPane>
          <children>
             <Pane fx:id="paneGameBoard" maxWidth="900.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: black;" />
