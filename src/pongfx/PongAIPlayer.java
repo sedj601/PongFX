@@ -18,16 +18,18 @@ public class PongAIPlayer
     private final Rectangle paddle;
     private final Random random = new Random();
     private boolean isHitLocationCalculated = false;
-    private double paddleHitLocation;
+
+    private double paddleSpeed;
 
     public PongAIPlayer(Rectangle paddle)
     {
         this.paddle = paddle;
+        paddleSpeed = 10;
     }
 
     public void MovePaddle(boolean isBallComingAtPaddle, double ballLocationX, double ballLocationY)
     {
-
+        double paddleHitLocation = 0;
         if (isBallComingAtPaddle) {
 
             if (!isHitLocationCalculated) {
@@ -38,10 +40,10 @@ public class PongAIPlayer
             Bounds paddleBounds = paddle.getBoundsInParent();
 
             if (paddleBounds.getMinY() + paddleHitLocation > ballLocationY) {
-                this.paddle.setY(this.paddle.getY() - 10);
+                this.paddle.setY(this.paddle.getY() - paddleSpeed);
             }
             else if (paddleBounds.getMaxY() - paddleHitLocation < ballLocationY) {
-                this.paddle.setY(this.paddle.getY() + 10);
+                this.paddle.setY(this.paddle.getY() + paddleSpeed);
             }
         }
         else {
@@ -49,4 +51,13 @@ public class PongAIPlayer
         }
     }
 
+    public double getPaddleSpeed()
+    {
+        return paddleSpeed;
+    }
+
+    public void setPaddleSpeed(double paddleSpeed)
+    {
+        this.paddleSpeed = paddleSpeed;
+    }
 }
