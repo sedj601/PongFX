@@ -85,13 +85,13 @@ public class FXMLDocumentController implements Initializable
         leftPaddle.setX(10);
         leftPaddle.setY((gameBoardHeight - paddleHeight) / 2);
         player1 = new PongAIPlayer(leftPaddle);
-        player1.setPaddleSpeed(15);
+        //player1.setPaddleSpeed(12);
 
         rightPaddle = new Rectangle(paddleWidth, paddleHeight, Color.WHITE);
         rightPaddle.setX(gameBoardWidth - paddleWidth - 10);
         rightPaddle.setY((gameBoardHeight - paddleHeight) / 2);
         player2 = new PongAIPlayer(rightPaddle);
-        player2.setPaddleSpeed(15);
+        //player2.setPaddleSpeed(12);
 
         paneGameBoard.getChildren().addAll(ball, leftPaddle, rightPaddle);
 
@@ -137,12 +137,13 @@ public class FXMLDocumentController implements Initializable
             player2Score += 1;
             lblPlayer2Score.setText(Integer.toString(player2Score));
             gameLoop.stop();
-
+            resetTable();
         }
         else if (ball.getBoundsInParent().getMaxX() >= paneGameBoard.getWidth()) {
             player1Score += 1;
             lblPlayer1Score.setText(Integer.toString(player1Score));
             gameLoop.stop();
+            resetTable();
         }
     }
 
@@ -210,8 +211,12 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    public void newBallReset()
+    public void resetTable()
     {
-
+        ball.setCenterX(gameBoardWidth / 2.0);
+        ball.setCenterY(gameBoardHeight / 2.0);
+        leftPaddle.setY((gameBoardHeight - paddleHeight) / 2);
+        rightPaddle.setY((gameBoardHeight - paddleHeight) / 2);
+        bounceAngle = 0;
     }
 }
