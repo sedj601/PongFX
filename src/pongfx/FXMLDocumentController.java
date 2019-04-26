@@ -78,7 +78,6 @@ public class FXMLDocumentController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-
         ball = new Circle(gameBoardWidth / 2.0, gameBoardHeight / 2.0, 7, Color.WHITE);
 
         leftPaddle = new Rectangle(paddleWidth, paddleHeight, Color.WHITE);
